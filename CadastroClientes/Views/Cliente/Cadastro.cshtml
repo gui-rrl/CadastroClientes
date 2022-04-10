@@ -1,0 +1,88 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div id="cadastro">
+    <form method="post" action="">
+        <h1>Cadastro</h1>
+
+         <p>
+            <label for="id">ID</label>
+            <input id="Id" disabled="disabled" name="Id" required="required" type="text" value="@Model.Id" />
+        </p>
+
+        <p>
+            <label for="nome">Seu nome</label>
+            <input id="Nome" name="Nome" required="required" type="text" value="@Model.Nome" />
+        </p>
+
+        <p>
+            <label for="sexo">Sexo</label>
+            <input id="Sexo" name="Sexo" required="required" type="text" value="@Model.Sexo" />
+        </p>
+
+        <p>
+            <label for="dataNascimento">Data de nascimento</label>
+            <input id="DataNascimento" name="DataNascimento" required="required" type="date" value="@Model.DataNascimento" />
+        </p>
+
+        <p>
+            <label for="estadoCivil">Estado Civil</label>
+            <input id="EstadoCivil" name="EstadoCivil" required="required" type="text" value = "@Model.EstadoCivil" />
+        </p>
+
+        <p>
+            <label for="cpf">Seu CPF</label>
+            <input id="Cpf" name="Cpf" required="required" type="text" value ="@Model.Cpf" />
+        </p>
+
+        <p>
+            <label for="rg">Seu RG</label>
+            <input id="Rg" name="Rg" required="required" type="text" value="@Model.Rg" />
+        </p>
+
+        <p>
+            <button onclick="Salvar()">Salvar</button>
+        </p>
+
+
+
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script>
+
+    function Salvar() {
+        var cliente = {
+            Id : $("#Id").val(),
+            Nome: $("#Nome").val(),
+            Sexo: $("#Sexo").val(),
+            DataNascimento: $("#DataNascimento").val(),
+            EstadoCivil: $("#EstadoCivil").val(),
+            Cpf: $("#Cpf").val(),
+            Rg: $("#Rg").val()
+        }
+
+        $.ajax({
+            url: 'InserirAtualizarCliente',
+            type: 'POST',
+            data: {
+                cliente: cliente
+            },
+            done: function (response) {
+                console.log(response);
+                window.location.href = (window.location.href + response);
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+
+    
+
+</script>
