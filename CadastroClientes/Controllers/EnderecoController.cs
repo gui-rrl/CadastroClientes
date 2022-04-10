@@ -25,7 +25,7 @@ namespace CadastroClientes.Controllers
         public void InserirAtualizarEndereco(Endereco endereco)
         {
                     
-            if (endereco.Id != default(int))
+            if (endereco.Id == default(int))
             {
                 Endereco.InserirEndereco(endereco);
             }

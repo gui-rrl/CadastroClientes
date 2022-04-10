@@ -1,6 +1,7 @@
 ﻿using CadastroClientes.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Web;
 
 namespace CadastroClientes.Controllers
 {
@@ -13,8 +14,7 @@ namespace CadastroClientes.Controllers
 
         public IActionResult Cadastro(int id)
         {
-            Cliente cliente = new Cliente();
-
+            Cliente cliente = new Cliente();      
             if (id != default (int)){
                 cliente = Cliente.SelecionarId(id);
             }
@@ -46,10 +46,8 @@ namespace CadastroClientes.Controllers
             else
             {
                 Cliente.AtualizarCliente(cliente);
-                return cliente.Id;
+                return 0;
             }
-
-            return 0;
         }
 
         public ActionResult SelecionarPorID(int id)

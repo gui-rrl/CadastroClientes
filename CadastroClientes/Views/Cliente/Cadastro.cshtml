@@ -3,12 +3,10 @@
 *@
 @{
 }
-
-<div id="cadastro">
-    <form method="post" action="">
+    <div id="cadastro">
         <h1>Cadastro</h1>
 
-         <p>
+        <p>
             <label for="id">ID</label>
             <input id="Id" disabled="disabled" name="Id" required="required" type="text" value="@Model.Id" />
         </p>
@@ -25,7 +23,7 @@
 
         <p>
             <label for="dataNascimento">Data de nascimento</label>
-            <input id="DataNascimento" name="DataNascimento" required="required" type="date" value="@Model.DataNascimento" />
+            <input id="DataNascimento" name="DataNascimento" required="required" type="date" value="@Model.DataNascimento.ToString("dd/mm/yyyy")" />
         </p>
 
         <p>
@@ -46,17 +44,84 @@
         <p>
             <button onclick="Salvar()">Salvar</button>
         </p>
+        </div>
+    @if(Model.Id != default(int)){
+        <h1>Inserir Endereço</h1>
+        <div id="Endereco">
+        <p>
+            <label for="nome">Tipo</label>
+            <select  id="Tipo">
+              <option value="1">Residencial</option>
+              <option value="2">Comercial</option>
+              <option value="3">Outros</option>
+        </select>
+        </p>
+
+        <p>
+            <label for="logradouro">Logradouro</label>
+            <input id="Logradouro" name="Logradouro" required="required" type="text" value="" />
+        </p>
+
+        <p>
+            <label for="numero">Número</label>
+            <input id="Numero" name="numero" required="required" type="number" value="" />
+        </p>
+
+        <p>
+            <label for="complemento">Complemento</label>
+            <input id="Complemento" name="Complemento" required="required" type="text" value="" />
+        </p>
+
+        <p>
+            <label for="cidade">Cidade</label>
+            <input id="Cidade" name="Cidade" required="required" type="text" value="" />
+        </p>
+
+        <p>
+            <label for="uf">UF</label>
+            <input id="Uf" name="Uf" required="required" type="text" maxlength="2" value="" />
+        </p>
+
+        <p>
+            <label for="cep">CEP</label>
+            <input id="Cep" name="Cep" required="required" maxlength="8" type="number" value="" />
+        </p>
+
+        <p>
+            <button onclick="SalvarEndereco()">Salvar Endereço</button>
+        </p>
+    </div>
+    }
 
 
+    @if(Model.Id != default(int)){
+        <div>
+            <table id="TabelaCliente" class="display">
+                <tr>
+                    <th>Tipo</th>
+                    <th>Logradouro</th>
+                    <th>Numero</th>
+                    <th>Complemento</th>
+                    <th>UF</th>
+                    <th>Cidade</th>
+                    <th>CEP</th>
+                </tr>
+            </table>
+        </div>
 
-    </form>
+    }
+    
 </div>
+
+
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <script>
+    var url = window.location.origin;
 
     function Salvar() {
+
         var cliente = {
             Id : $("#Id").val(),
             Nome: $("#Nome").val(),
@@ -68,20 +133,58 @@
         }
 
         $.ajax({
-            url: 'InserirAtualizarCliente',
-            type: 'POST',
+          url: url+"/Cliente/InserirAtualizarCliente",
+          async: false, 
+          type: 'POST',
             data: {
                 cliente: cliente
-            },
-            done: function (response) {
-                console.log(response);
-                window.location.href = (window.location.href + response);
-            },
-            error: function () {
-                alert("error");
-            }
+           },
+        })
+        .done(function(res) {
+          alert("Endereço Salvo com sucesso")
+          if(res != 0)
+          window.location.href = (window.location.href + "/"+res);
+          else window.location.href = window.location.href;
+
+        })
+        .fail(function(err) {
+          alert("Erro ao salvar Cliente");
         });
+
+
     }
+
+    function SalvarEndereco() {
+
+        var endereco = {
+            Id_Cliente : $("#Id").val(),//id do proprio cliente
+            Id_Tipo: $("#Tipo").val(),
+            Logradouro: $("#Logradouro").val(),
+            Numero: $("#Numero").val(),
+            Complemento: $("#Complemento").val(),
+            Uf: $("#Uf").val(),
+            Cidade: $("#Cidade").val(),
+            Cep: $("#Cep").val()
+        }
+
+         $.ajax({
+          url: url+"/Endereco/InserirAtualizarEndereco",
+          type: 'POST',
+            data: {
+                endereco: endereco
+           },
+        })
+        .done(function(res) {
+          window.location.href = window.location.href;
+        })
+        .fail(function(err) {
+          alert("Erro ao salvar Endereço");
+        });
+
+        }
+
+
+
 
     
 
