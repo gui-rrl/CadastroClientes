@@ -1,5 +1,6 @@
 ﻿using CadastroClientes.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Web;
 
@@ -57,9 +58,26 @@ namespace CadastroClientes.Controllers
             return Json(cliente);
         }
 
-        public void ExcluirCliente(int id)
+        public JsonResult ExcluirCliente(int id)
         {
-            Cliente.ExcluirCliente(id);
+            if(id != 0)
+            {
+                try
+                {
+                    Cliente.ExcluirCliente(id);
+                    return Json(new { success = true, msg="Sucesso ao excluir cliente"});
+                        
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, msg = "Erro ao excluir cliente" + ex.Message });
+                }
+
+            }
+            else
+            {
+                return Json(new { success = false, msg = "Erro ao excluir cliente! Id não informado" });
+            }
         }
     }
 }

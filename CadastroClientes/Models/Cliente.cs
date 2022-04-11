@@ -171,7 +171,7 @@ namespace CadastroClientes.Models
             SqlCommand cmd = new SqlCommand("dbo.SP_ClienteExcluir", connection);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@ID_Cliente", id);
+            cmd.Parameters.AddWithValue("@id", id);
 
             cmd.ExecuteNonQuery();
 

@@ -3,58 +3,58 @@
 *@
 @{
 }
-    <div id="cadastro">
-        <h1>Cadastro</h1>
+<div id="cadastro" class="container">
+    <h1>Cadastro</h1>
+    <div class="row">
+        <label for="id">ID</label>
+        <input id="Id" disabled="disabled" readonly name="Id" required="required" type="text" value="@Model.Id" class="form-control" />
+    </div>@*faz nos outros*@
 
-        <p>
-            <label for="id">ID</label>
-            <input id="Id" disabled="disabled" name="Id" required="required" type="text" value="@Model.Id" />
-        </p>
+    <div class="row">
+        <label for="nome">Seu nome</label>
+        <input id="Nome" name="Nome" required="required" type="text" value="@Model.Nome" class="form-control" />
+    </div>
 
-        <p>
-            <label for="nome">Seu nome</label>
-            <input id="Nome" name="Nome" required="required" type="text" value="@Model.Nome" />
-        </p>
+    <div class="row">
+        <label for="sexo">Sexo</label>
+        <input id="Sexo" name="Sexo" required="required" type="text" value="@Model.Sexo" class="form-control" />
+    </div>
 
-        <p>
-            <label for="sexo">Sexo</label>
-            <input id="Sexo" name="Sexo" required="required" type="text" value="@Model.Sexo" />
-        </p>
+    <div class="row">
+        <label for="dataNascimento">Data de nascimento</label>
+        <input id="DataNascimento" name="DataNascimento" required="required" type="date" value="@Model.DataNascimento.ToString("dd/mm/yyyy")" class="form-control" />
+    </div>
 
-        <p>
-            <label for="dataNascimento">Data de nascimento</label>
-            <input id="DataNascimento" name="DataNascimento" required="required" type="date" value="@Model.DataNascimento.ToString("dd/mm/yyyy")" />
-        </p>
+    <div class="row">
+        <label for="estadoCivil">Estado Civil</label>
+        <input id="EstadoCivil" name="EstadoCivil" required="required" type="text" value="@Model.EstadoCivil" class="form-control" />
+    </div>
 
-        <p>
-            <label for="estadoCivil">Estado Civil</label>
-            <input id="EstadoCivil" name="EstadoCivil" required="required" type="text" value = "@Model.EstadoCivil" />
-        </p>
+    <div class="row">
+        <label for="cpf">Seu CPF</label>
+        <input id="Cpf" name="Cpf" required="required" type="text" value="@Model.Cpf" class="form-control" />
+    </div>
 
-        <p>
-            <label for="cpf">Seu CPF</label>
-            <input id="Cpf" name="Cpf" required="required" type="text" value ="@Model.Cpf" />
-        </p>
+    <div class="row">
+        <label for="rg">Seu RG</label>
+        <input id="Rg" name="Rg" required="required" type="text" value="@Model.Rg" class="form-control" />
+    </div>
 
-        <p>
-            <label for="rg">Seu RG</label>
-            <input id="Rg" name="Rg" required="required" type="text" value="@Model.Rg" />
-        </p>
-
-        <p>
-            <button onclick="Salvar()">Salvar</button>
-        </p>
-        </div>
-    @if(Model.Id != default(int)){
-        <h1>Inserir Endereço</h1>
-        <div id="Endereco">
+    <div class="row mt-2">
+        <button onclick="Salvar()" class="btn btn-primary">Salvar</button>
+    </div>
+</div>
+@if (Model.Id != default(int))
+{
+    <h1>Inserir Endereço</h1>
+    <div id="Endereco">
         <p>
             <label for="nome">Tipo</label>
-            <select  id="Tipo">
-              <option value="1">Residencial</option>
-              <option value="2">Comercial</option>
-              <option value="3">Outros</option>
-        </select>
+            <select id="Tipo">
+                <option value="1">Residencial</option>
+                <option value="2">Comercial</option>
+                <option value="3">Outros</option>
+            </select>
         </p>
 
         <p>
@@ -91,31 +91,30 @@
             <button onclick="SalvarEndereco()">Salvar Endereço</button>
         </p>
     </div>
-    }
+}
 
 
-    @if(Model.Id != default(int)){
-        <div>
-            <table id="TabelaCliente" class="display">
-                <tr>
-                    <th>Tipo</th>
-                    <th>Logradouro</th>
-                    <th>Numero</th>
-                    <th>Complemento</th>
-                    <th>UF</th>
-                    <th>Cidade</th>
-                    <th>CEP</th>
-                </tr>
-            </table>
-        </div>
+@if (Model.Id != default(int))
+{
+    <div>
+        <table id="TabelaCliente" class="display">
+            <tr>
+                <th>Tipo</th>
+                <th>Logradouro</th>
+                <th>Numero</th>
+                <th>Complemento</th>
+                <th>UF</th>
+                <th>Cidade</th>
+                <th>CEP</th>
+            </tr>
+        </table>
+    </div>
 
-    }
-    
-</div>
-
-
+}
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 
 <script>
     var url = window.location.origin;
@@ -123,7 +122,7 @@
     function Salvar() {
 
         var cliente = {
-            Id : $("#Id").val(),
+            Id: $("#Id").val(),
             Nome: $("#Nome").val(),
             Sexo: $("#Sexo").val(),
             DataNascimento: $("#DataNascimento").val(),
@@ -133,23 +132,23 @@
         }
 
         $.ajax({
-          url: url+"/Cliente/InserirAtualizarCliente",
-          async: false, 
-          type: 'POST',
+            url: url + "/Cliente/InserirAtualizarCliente",
+            async: false,
+            type: 'POST',
             data: {
                 cliente: cliente
-           },
+            },
         })
-        .done(function(res) {
-          alert("Endereço Salvo com sucesso")
-          if(res != 0)
-          window.location.href = (window.location.href + "/"+res);
-          else window.location.href = window.location.href;
+            .done(function (res) {
+                alert("Endereço Salvo com sucesso")
+                if (res != 0)
+                    window.location.href = (window.location.href + "/" + res);
+                else window.location.href = window.location.href;
 
-        })
-        .fail(function(err) {
-          alert("Erro ao salvar Cliente");
-        });
+            })
+            .fail(function (err) {
+                alert("Erro ao salvar Cliente");
+            });
 
 
     }
@@ -157,7 +156,7 @@
     function SalvarEndereco() {
 
         var endereco = {
-            Id_Cliente : $("#Id").val(),//id do proprio cliente
+            Id_Cliente: $("#Id").val(),//id do proprio cliente
             Id_Tipo: $("#Tipo").val(),
             Logradouro: $("#Logradouro").val(),
             Numero: $("#Numero").val(),
@@ -167,25 +166,37 @@
             Cep: $("#Cep").val()
         }
 
-         $.ajax({
-          url: url+"/Endereco/InserirAtualizarEndereco",
-          type: 'POST',
+        $.ajax({
+            url: url + "/Endereco/InserirAtualizarEndereco",
+            type: 'POST',
             data: {
                 endereco: endereco
-           },
+            },
         })
-        .done(function(res) {
-          window.location.href = window.location.href;
-        })
-        .fail(function(err) {
-          alert("Erro ao salvar Endereço");
-        });
+            .done(function (res) {
+                window.location.href = window.location.href;
+            })
+            .fail(function (err) {
+                alert("Erro ao salvar Endereço");
+            });
 
-        }
+    }
 
-
-
-
-    
+    //$('#TabelaEndereco').DataTable({
+    //    "ajax": {
+    //        "url": "Endereco/SelecionarPorId",
+    //        "type": "POST",
+    //        "dataSrc": "data"
+    //    },
+    //    "columns": [
+    //        { "data": "idTipo" },
+    //        { "data": "logradouro" },
+    //        { "data": "numero" }
+    //        { "data": "complemento" }
+    //        { "data": "cidade" }
+    //        { "data": "uf" }
+    //        { "data": "cep" }
+    //    ]
+    //});
 
 </script>

@@ -10,12 +10,15 @@
 </div>
 <br />
 <table id="TabelaCliente" class="display">
-    <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>CPF</th>
-        <th>RG</th>
-    </tr>
+    
+        <tr>
+            <td>ID</td>
+            <td>Nome</td>
+            <td>CPF</td>
+            <td>RG</td>
+            <td>Action</td>
+        </tr>
+    
 </table>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -23,20 +26,69 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
 
 <script>
+    var url = window.location.origin;
 
-  
-    $('#TabelaCliente').DataTable({
+    var tabela = $('#TabelaCliente').DataTable({
         "ajax": {
             "url": "Cliente/SelecionarTodos",
             "type": "POST",
             "dataSrc": "data"
         },
         "columns": [
+
             { "data": "id" },
             { "data": "nome" },
             { "data": "cpf" },
-            { "data": "rg" }
+            { "data": "rg" },
+            {
+                "data": "id",
+                "render": function (data) {
+                    return "<a href='/Cliente/Cadastro/" + data + "' class='btn btn-outline-warning'>Editar</a>"
+                }
+            },
+                {
+                "data": "id",
+                    "render": function Excluir(data) {
+                        return "<button class=\"btn btn-outline-danger\" onclick=\"Excluir(" + data + ")\">Excluir</button>"
+                }       
+            } 
         ]
-    });
-</script>
 
+        //copia o codigo do botao de salvar do html e muda pra deletar e chama a funcao deletar com o id
+    });
+
+    function Excluir(data) {
+        $.ajax({
+            url: url + "/Cliente/ExcluirCliente/",
+            async: false,
+            type: 'POST',
+            data: {
+                id: parseFloat(data)
+            },
+            success: function (data) {
+                console.log(data)
+                if (data.success) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',//aqui você troca o type error ou success
+                        title: 'Cliente Excluido com sucesso!'
+                    })
+
+                    tabela.ajax.reload();
+                }
+            },
+        });
+    }
+
+</script>
