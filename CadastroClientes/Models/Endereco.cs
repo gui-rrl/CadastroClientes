@@ -97,7 +97,7 @@ namespace CadastroClientes.Models
             return lista;
         }
 
-        public static Endereco SelecionarId(int id)
+        public static List<Endereco> SelecionarPorID(int id)
         {
             SqlConnection connection = new SqlConnection("Server=Guilherme\\SQLEXPRESS02;Database=Cliente;User ID = sa; Password=Gui156061;" +
             "Trusted_Connection=False; MultipleActiveResultSets=true");
@@ -110,10 +110,12 @@ namespace CadastroClientes.Models
             cmd.Parameters.AddWithValue("@Id", id);
             SqlDataReader dr = cmd.ExecuteReader();
 
-            Endereco endereco = new Endereco();
+            List<Endereco> lista = new List<Endereco>();
 
             while (dr.Read())
             {
+                Endereco endereco = new Endereco();
+
                 endereco.Id_Cliente = int.Parse(dr["ID_Cliente"].ToString());
                 endereco.Id_Tipo = int.Parse(dr["ID_Tipo"].ToString());
                 endereco.Logradouro = dr["Logradouro"].ToString();
@@ -123,6 +125,7 @@ namespace CadastroClientes.Models
                 endereco.Uf = dr["Uf"].ToString();
                 endereco.Cep = dr["Cep"].ToString();
 
+                lista.Add(endereco);
             }
 
             if (connection.State == ConnectionState.Open)
@@ -130,7 +133,7 @@ namespace CadastroClientes.Models
                 connection.Close();
             }
 
-            return endereco;
+            return lista;
         }
 
         public static void AtualizarEndereco(Endereco endereco)

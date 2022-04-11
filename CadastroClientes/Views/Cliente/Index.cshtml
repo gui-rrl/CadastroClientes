@@ -52,9 +52,7 @@
                         return "<button class=\"btn btn-outline-danger\" onclick=\"Excluir(" + data + ")\">Excluir</button>"
                 }       
             } 
-        ]
-
-        //copia o codigo do botao de salvar do html e muda pra deletar e chama a funcao deletar com o id
+        ]       
     });
 
     function Excluir(data) {
@@ -65,6 +63,7 @@
             data: {
                 id: parseFloat(data)
             },
+
             success: function (data) {
                 console.log(data)
                 if (data.success) {
@@ -81,8 +80,8 @@
                     })
 
                     Toast.fire({
-                        icon: 'success',//aqui você troca o type error ou success
-                        title: 'Cliente Excluido com sucesso!'
+                        icon: 'success',
+                        title: 'Cliente Adicionado com sucesso!'
                     })
 
                     tabela.ajax.reload();
@@ -90,5 +89,4 @@
             },
         });
     }
-
 </script>

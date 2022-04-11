@@ -44,6 +44,10 @@
         <button onclick="Salvar()" class="btn btn-primary">Salvar</button>
     </div>
 </div>
+<br />
+<br />
+<br />
+<br />
 @if (Model.Id != default(int))
 {
     <h1>Inserir Endereço</h1>
@@ -57,47 +61,52 @@
             </select>
         </p>
 
-        <p>
+        <div class="row">
             <label for="logradouro">Logradouro</label>
-            <input id="Logradouro" name="Logradouro" required="required" type="text" value="" />
-        </p>
+            <input id="Logradouro" name="Logradouro" required="required" type="text" value="" class="form-control" />
+        </div>
 
-        <p>
+        <div class="row">
             <label for="numero">Número</label>
-            <input id="Numero" name="numero" required="required" type="number" value="" />
-        </p>
+            <input id="Numero" name="numero" required="required" type="number" value="" class="form-control" />
+        </div>
 
-        <p>
+        <div class="row">
             <label for="complemento">Complemento</label>
-            <input id="Complemento" name="Complemento" required="required" type="text" value="" />
-        </p>
+            <input id="Complemento" name="Complemento" required="required" type="text" value="" class="form-control" />
+        </div>
 
-        <p>
+        <div class="row">
             <label for="cidade">Cidade</label>
-            <input id="Cidade" name="Cidade" required="required" type="text" value="" />
-        </p>
+            <input id="Cidade" name="Cidade" required="required" type="text" value="" class="form-control" />
+        </div>
 
-        <p>
+        <div class="row">
             <label for="uf">UF</label>
-            <input id="Uf" name="Uf" required="required" type="text" maxlength="2" value="" />
-        </p>
+            <input id="Uf" name="Uf" required="required" type="text" maxlength="2" value="" class="form-control" />
+        </div>
 
-        <p>
+        <div class="row">
             <label for="cep">CEP</label>
-            <input id="Cep" name="Cep" required="required" maxlength="8" type="number" value="" />
-        </p>
+            <input id="Cep" name="Cep" required="required" maxlength="8" type="number" value="" class="form-control" />
+        </div>
 
-        <p>
-            <button onclick="SalvarEndereco()">Salvar Endereço</button>
-        </p>
+        <div class="row mt-2">
+            <button onclick="SalvarEndereco()" class="btn btn-primary">Salvar Endereço</button>
+        </div>
     </div>
+    <br />
+    <br />
+    <br />
+
+    <h1>Lista de Endereços</h1>
 }
 
 
 @if (Model.Id != default(int))
 {
     <div>
-        <table id="TabelaCliente" class="display">
+        <table id="TabelaEndereco" class="display">
             <tr>
                 <th>Tipo</th>
                 <th>Logradouro</th>
@@ -119,6 +128,23 @@
 <script>
     var url = window.location.origin;
 
+    $('#TabelaEndereco').DataTable({
+        "ajax": {
+            "url": "/Endereco/SelecionarPorID/",
+            "type": "POST",
+            "dataSrc": "data"
+        },
+        "columns": [
+            { "data": "idTipo" },
+            { "data": "logradouro" },
+            { "data": "numero" },
+            { "data": "complemento" },
+            { "data": "cidade" },
+            { "data": "uf" },
+            { "data": "cep" }
+        ]
+    });
+
     function Salvar() {
 
         var cliente = {
@@ -139,8 +165,9 @@
                 cliente: cliente
             },
         })
+
             .done(function (res) {
-                alert("Endereço Salvo com sucesso")
+                alert("Salvo com sucesso")
                 if (res != 0)
                     window.location.href = (window.location.href + "/" + res);
                 else window.location.href = window.location.href;
@@ -149,14 +176,12 @@
             .fail(function (err) {
                 alert("Erro ao salvar Cliente");
             });
-
-
     }
 
     function SalvarEndereco() {
 
         var endereco = {
-            Id_Cliente: $("#Id").val(),//id do proprio cliente
+            Id_Cliente: $("#Id").val(),
             Id_Tipo: $("#Tipo").val(),
             Logradouro: $("#Logradouro").val(),
             Numero: $("#Numero").val(),
@@ -180,23 +205,5 @@
                 alert("Erro ao salvar Endereço");
             });
 
-    }
-
-    //$('#TabelaEndereco').DataTable({
-    //    "ajax": {
-    //        "url": "Endereco/SelecionarPorId",
-    //        "type": "POST",
-    //        "dataSrc": "data"
-    //    },
-    //    "columns": [
-    //        { "data": "idTipo" },
-    //        { "data": "logradouro" },
-    //        { "data": "numero" }
-    //        { "data": "complemento" }
-    //        { "data": "cidade" }
-    //        { "data": "uf" }
-    //        { "data": "cep" }
-    //    ]
-    //});
-
+    };
 </script>
