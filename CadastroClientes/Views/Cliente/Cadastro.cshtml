@@ -115,6 +115,7 @@
                 <th>UF</th>
                 <th>Cidade</th>
                 <th>CEP</th>
+                <th>Excluir</th>
             </tr>
         </table>
     </div>
@@ -127,21 +128,34 @@
 
 <script>
     var url = window.location.origin;
-
+    var id = $("#Id").val();
     $('#TabelaEndereco').DataTable({
         "ajax": {
-            "url": "/Endereco/SelecionarPorID/",
+            "url": url + "/Endereco/SelecionarPorID/" + id,
             "type": "POST",
             "dataSrc": "data"
         },
         "columns": [
-            { "data": "idTipo" },
+            { "data": "id_Tipo",
+               "render": function(data){
+                   if(data == "1") return "Residencial";
+                   if(data == "2") return "Comercial";
+                   if(data == "3") return "Outros";               
+               }
+            },
             { "data": "logradouro" },
             { "data": "numero" },
-            { "data": "complemento" },
-            { "data": "cidade" },
+            { "data": "complemento" },            
             { "data": "uf" },
-            { "data": "cep" }
+            { "data": "cidade" },
+            { "data": "cep" },
+            {
+                "data": "id_Cliente",
+                "render": function Excluir(data) {
+                    return "<button class=\"btn btn-outline-danger\" onclick=\"Excluir(" + data + ")\">Excluir</button>"
+                }
+            }
+
         ]
     });
 
@@ -203,7 +217,23 @@
             })
             .fail(function (err) {
                 alert("Erro ao salvar Endereço");
-            });
+            });     
+    }
 
-    };
+    function Excluir(data) {
+        $.ajax({
+            url: url + "/Endereco/ExcluirEndereco/",
+            async: false,
+            type: 'POST',
+            data: {
+                id: parseFloat(data)
+            },
+        })
+            .done(function (res) {
+                window.location.href = window.location.href;
+            })
+            .fail(function (err) {
+                alert("Erro ao excluir endereço");
+            });                
+    }
 </script>

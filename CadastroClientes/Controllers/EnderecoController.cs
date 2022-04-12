@@ -36,15 +36,15 @@ namespace CadastroClientes.Controllers
             }
         }
 
-        public static ActionResult SelecionarPorID(int id)
+        public ActionResult SelecionarPorID(int id)
         {
             List<Endereco> lista = new List<Endereco>();
-            lista = Endereco.SelecionarPorID(id);
+            lista = Endereco.SelecionarPorCliente(id);
             var result = new
             {
                 data = lista
             };
-            return new JsonResult(lista);
+            return new JsonResult(result);
         }
 
         public void ExcluirEndereco(int id)
